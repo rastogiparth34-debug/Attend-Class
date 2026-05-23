@@ -1,0 +1,39 @@
+#fronted library 
+streamlit
+
+
+numpy
+pandas
+# face recogination
+scikit-learn
+# face detection
+dlib-bin
+git+https://github.com/ageitgey/face_recognition_models.git
+setuptools<70.0.0
+
+#database
+supabase
+
+# for hashing the password
+bcrypt
+
+#for qr code
+segno
+
+#for image preprocessing features for recyling scale etc
+pillow
+
+
+
+# this for voice pipeline 
+librosa
+# IMPORTANT: resemblyzer depends on webrtcvad which needs C++ build tools.
+# Instead, install webrtcvad-wheels (prebuilt) FIRST, then resemblyzer with --no-deps:
+#   pip install webrtcvad-wheels
+#   pip install --no-deps resemblyzer==0.1.3
+webrtcvad-wheels
+resemblyzer==0.1.3 
+torch
+
+
+

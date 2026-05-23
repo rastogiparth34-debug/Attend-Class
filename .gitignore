@@ -1,0 +1,9 @@
+.env
+.vscode
+*.pyc
+.Ds_Store
+__Pycache__/
+venv/
+.streamlit/
+dist/
+secrets.toml
