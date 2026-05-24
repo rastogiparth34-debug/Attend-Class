@@ -3,7 +3,7 @@ from src.ui.base_layout import style_background_dashbord, style_base_layout
 from src.components.header import header_dashboard
 from src.components.footer import footer_dashboard
 from src.components.subject_card import subject_card
-from src.database.db import check_teacher_exists,create_teacher,teacher_login,get_teacher_subjects
+from src.database.db import check_teacher_exists,create_teacher,teacher_login,get_teacher_subjects,delete_subject
 from src.components.dialog_create_subject import create_subject_dialog
 from src.components.dialog_share_subject import share_subject_dialog
 from src.components.dialog_add_photo import add_photos_dialog
@@ -178,7 +178,7 @@ def teacher_tab_take_attendance():
                             'is_present': bool(is_present)
                         })
 
-                attendance_result_dialog(pd.DataFrame(results), attendance_to_log)
+                    attendance_result_dialog(pd.DataFrame(results), attendance_to_log)
 
     with c3:
         if st.button('Use Voice Attendance', type='primary', width='stretch', icon=':material/mic:'):
@@ -204,18 +204,25 @@ def teacher_tab_manage_subjects():
                 ("🫂", "Students", sub['total_students']),
                 ("🕰️", "Classes", sub['total_classes']),
             ]
-        def share_btn():
-            if st.button(f"Share Code: {sub['name']}", key=f"share_{sub['subject_code']}", icon=":material/share:"):
-                share_subject_dialog(sub['name'], sub['subject_code'])
-            st.space()
+            
+            def card_actions(current_sub=sub):
+                col1, col2 = st.columns(2)
+                with col1:
+                    if st.button(f"Share Code: {current_sub['name']}", key=f"share_{current_sub['subject_code']}", icon=":material/share:", use_container_width=True):
+                        share_subject_dialog(current_sub['name'], current_sub['subject_code'])
+                with col2:
+                    if st.button("Delete Subject", key=f"delete_{current_sub['subject_code']}", icon=":material/delete:", use_container_width=True):
+                        delete_subject(current_sub['subject_id'])
+                        st.rerun()
+                st.space()
 
-        subject_card(
-            name = sub['name'],
-            code = sub['subject_code'],
-            section = sub['section'],
-            stats=stats,
-            footer_callback=share_btn
-        )
+            subject_card(
+                name = sub['name'],
+                code = sub['subject_code'],
+                section = sub['section'],
+                stats=stats,
+                footer_callback=card_actions
+            )
     else:
         st.info("NO SUBJECTS FOUND. CREATE ONE ABOVE")
 
